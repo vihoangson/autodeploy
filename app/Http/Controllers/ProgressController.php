@@ -9,6 +9,7 @@ class ProgressController extends Controller
 {
     private $composerLog;
     public function doCommand(Request $request){
+
         $tag = $request->input('tag');
         $server = $request->input('server');
         switch ($server) {
@@ -35,6 +36,7 @@ class ProgressController extends Controller
         }
 
         $process = new Process('cd ../../'.$path.' && git fetch && git reset --hard '.$tag);
+
         $this->composerLog;
         $process->run(function($type, $buffer) {
             $this->composerLog[] = $buffer;
