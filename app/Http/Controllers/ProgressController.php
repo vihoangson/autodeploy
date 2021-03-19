@@ -45,4 +45,8 @@ class ProgressController extends Controller
         dd($process->isSuccessful());
         return ;
     }
+
+    public function getVersion($server){
+        return 123;
+    }
 }

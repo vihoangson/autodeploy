@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'ProgressController@doCommand');
+Route::get('/get-version/{server}', 'ProgressController@getVersion');
