@@ -42,7 +42,7 @@ class ProgressController extends Controller {
 
         $return = ($this->doCommandGetVersion($request));
 
-        return json_encode(["version" => $server, "return" => $return]);
+        return json_encode(["server" => $server, "return" => $return]);
     }
 
     private function getPath($server): ?string {
