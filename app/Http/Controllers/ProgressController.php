@@ -75,6 +75,7 @@ class ProgressController extends Controller {
 
     public function doDeploy($server, Request $request) {
         $tag = $request->input('tag');
+        return $tag;
         $request = new Request();
         $request->initialize(['server' => $server, 'tag' => $tag]);
 
