@@ -35,10 +35,50 @@ class ProgressController extends Controller {
         return ($this->composerLog);
     }
 
+    private function doCommandDeploy(Request $request) {
+
+        $tag    = $request->input('tag');
+        $server = $request->input('server');
+        $path   = $this->getPath($server);
+
+        if ($path === null) {
+            return null;
+        }
+
+        if (strlen($tag) !== 8) {
+            if (!preg_match('/^v\d+\.\d+/', $tag)) {
+                //return false;
+            }
+        }
+
+        $command = 'cd ../../' . $path . ' && git fetch && git reset --hard ' . $tag;
+
+        $process = new Process($command);
+
+        $this->composerLog;
+        $process->run(function ($type, $buffer) {
+            $this->composerLog[] = $buffer;
+        });
+
+        return ($this->composerLog);
+    }
+
     public function getVersion($server, Request $request) {
 
         $request = new Request();
         $request->initialize(['tag' => 1, 'server' => $server]);
+
+        $return = ($this->doCommandGetVersion($request));
+
+        return json_encode(["server" => $server, "return" => $return]);
+    }
+
+    public function doDeploy($server, Request $request) {
+        dd($server);
+
+        $request = new Request();
+        $tag = 'v1.1';
+        $request->initialize(['tag' => 1, 'server' => $server, 'tag' => $tag]);
 
         $return = ($this->doCommandGetVersion($request));
 
