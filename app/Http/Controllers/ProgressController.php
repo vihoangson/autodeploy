@@ -74,13 +74,11 @@ class ProgressController extends Controller {
     }
 
     public function doDeploy($server, Request $request) {
-        dd($server);
-
         $request = new Request();
         $tag = 'v1.1';
-        $request->initialize(['tag' => 1, 'server' => $server, 'tag' => $tag]);
+        $request->initialize(['server' => $server, 'tag' => $tag]);
 
-        $return = ($this->doCommandGetVersion($request));
+        $return = ($this->doCommandDeploy($request));
 
         return json_encode(["server" => $server, "return" => $return]);
     }
