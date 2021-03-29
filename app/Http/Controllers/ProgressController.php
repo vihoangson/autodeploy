@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 
-class ProgressController extends Controller
-{
-    private $composerLog;
-    public function doCommand(Request $request){
+class ProgressController extends Controller {
 
-        $tag = $request->input('tag');
+    private $composerLog;
+
+    private function doCommand(Request $request) {
+
+        $tag    = $request->input('tag');
         $server = $request->input('server');
+
         switch ($server) {
             case 'frontend':
                 $path = 'client_web';
@@ -26,27 +28,29 @@ class ProgressController extends Controller
                 $path = 'server_socket';
             break;
             default:
-                # code...
+                die;
             break;
         }
-        if(strlen($tag) !== 8){
-            if(!preg_match('/^v\d+\.\d+/',$tag)){
-                return redirect('/404');
+        if (strlen($tag) !== 8) {
+            if (!preg_match('/^v\d+\.\d+/', $tag)) {
+                //return redirect('/404');
             }
         }
 
-        $process = new Process('cd ../../'.$path.' && git fetch && git reset --hard '.$tag);
+        $process = new Process('cd ../../' . $path . ' && git fetch && git reset --hard ' . $tag);
 
         $this->composerLog;
-        $process->run(function($type, $buffer) {
+        $process->run(function ($type, $buffer) {
             $this->composerLog[] = $buffer;
         });
-        dump( $this->composerLog);
-        dd($process->isSuccessful());
-        return ;
+        return ($this->composerLog);
     }
 
-    public function getVersion($server){
-        return 123;
+    public function getVersion($server, Request $request) {
+        $request = new Request();
+        $request->initialize(['tag' => 1, 'server' => $server]);
+
+        $return = ($this->doCommand($request));
+        return json_encode(["version" => $server,"return" =>$return]);
     }
 }
