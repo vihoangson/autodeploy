@@ -33,11 +33,11 @@ class ProgressController extends Controller {
         }
         if (strlen($tag) !== 8) {
             if (!preg_match('/^v\d+\.\d+/', $tag)) {
-                //return redirect('/404');
+                return false;
             }
         }
 
-        $process = new Process('cd ../../' . $path . ' && git fetch && git reset --hard ' . $tag);
+        $process = new Process('cd ../../' . $path . ' && git status');
 
         $this->composerLog;
         $process->run(function ($type, $buffer) {
@@ -47,6 +47,7 @@ class ProgressController extends Controller {
     }
 
     public function getVersion($server, Request $request) {
+
         $request = new Request();
         $request->initialize(['tag' => 1, 'server' => $server]);
 
