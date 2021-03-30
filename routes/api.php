@@ -17,6 +17,8 @@ Route::middleware('auth:api')
      ->get('/user', function (Request $request) {
          return $request->user();
      });
+Route::group(['middleware' => 'APIToken'], function () {
+    Route::post('/do-deploy/{server}', 'ProgressController@doDeploy');
+    Route::get('/get-version/{server}', 'ProgressController@getVersion');
+});
 
-Route::post('/do-deploy/{server}', 'ProgressController@doDeploy');
-Route::get('/get-version/{server}', 'ProgressController@getVersion');
