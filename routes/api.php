@@ -13,7 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')
+     ->get('/user', function (Request $request) {
+         return $request->user();
+     });
+
 Route::post('/do-deploy/{server}', 'ProgressController@doDeploy');
+Route::get('/get-version/{server}', 'ProgressController@getVersion');

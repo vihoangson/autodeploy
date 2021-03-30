@@ -9,6 +9,73 @@ class ProgressController extends Controller {
 
     private $composerLog;
 
+    /**
+     * @param         $server
+     * @param Request $request
+     *
+     * @return false|string
+     */
+    public function getVersion($server, Request $request) {
+
+        $request = new Request();
+        $request->initialize(['tag' => 1, 'server' => $server]);
+
+        $return = ($this->doCommandGetVersion($request));
+
+        return json_encode(["server" => $server, "return" => $return]);
+    }
+
+    /**
+     * @param         $server
+     * @param Request $request
+     *
+     * @return false|mixed|string
+     */
+    public function doDeploy($server, Request $request) {
+        $tag = $request->input('tag');
+
+        return $tag;
+        $request = new Request();
+        $request->initialize(['server' => $server, 'tag' => $tag]);
+
+        $return = ($this->doCommandDeploy($request));
+
+        return json_encode(["server" => $server, "return" => $return]);
+    }
+
+    /**
+     * @param $server
+     *
+     * @return string|null
+     */
+    private function getPath($server): ?string {
+
+        switch ($server) {
+            case 'frontend':
+                $path = 'client_web';
+            break;
+            case 'backend':
+                $path = 'client_backend';
+            break;
+            case 'api':
+                $path = 'server_api';
+            break;
+            case 'socket':
+                $path = 'server_socket';
+            break;
+            default:
+                $path = null;
+            break;
+        }
+
+        return $path;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return null
+     */
     private function doCommandGetVersion(Request $request) {
 
         $tag    = $request->input('tag');
@@ -35,6 +102,11 @@ class ProgressController extends Controller {
         return ($this->composerLog);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return null
+     */
     private function doCommandDeploy(Request $request) {
 
         $tag    = $request->input('tag');
@@ -61,49 +133,5 @@ class ProgressController extends Controller {
         });
 
         return ($this->composerLog);
-    }
-
-    public function getVersion($server, Request $request) {
-
-        $request = new Request();
-        $request->initialize(['tag' => 1, 'server' => $server]);
-
-        $return = ($this->doCommandGetVersion($request));
-
-        return json_encode(["server" => $server, "return" => $return]);
-    }
-
-    public function doDeploy($server, Request $request) {
-        $tag = $request->input('tag');
-        return $tag;
-        $request = new Request();
-        $request->initialize(['server' => $server, 'tag' => $tag]);
-
-        $return = ($this->doCommandDeploy($request));
-
-        return json_encode(["server" => $server, "return" => $return]);
-    }
-
-    private function getPath($server): ?string {
-
-        switch ($server) {
-            case 'frontend':
-                $path = 'client_web';
-            break;
-            case 'backend':
-                $path = 'client_backend';
-            break;
-            case 'api':
-                $path = 'server_api';
-            break;
-            case 'socket':
-                $path = 'server_socket';
-            break;
-            default:
-                $path = null;
-            break;
-        }
-
-        return $path;
     }
 }
