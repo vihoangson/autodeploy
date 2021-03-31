@@ -37,7 +37,7 @@ class APIToken {
      */
     public function handle($request, Closure $next) {
         $secret = $request->header('secret');
-        if ($secret !== env('SECRET_KEY', '5432112345')) {
+        if ($secret !== config('deploy.secret_key')) {
             throw new \Exception('wrong secret');
         }
 
