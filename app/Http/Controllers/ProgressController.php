@@ -99,7 +99,7 @@ class ProgressController extends Controller {
             return null;
         }
 
-        if (strlen($tag) !== 8) {
+        if (strlen($tag) !== 7) {
             if (!preg_match('/^v\d+\.\d+/', $tag)) {
                 // return false;
             }
@@ -130,7 +130,7 @@ class ProgressController extends Controller {
             return null;
         }
 
-        if (strlen($tag) !== 8) {
+        if (strlen($tag) !== 7) {
             if (!preg_match('/^v\d+\.\d+/', $tag)) {
                 return false;
             }
