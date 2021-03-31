@@ -7,6 +7,20 @@ use Symfony\Component\Process\Process;
 
 class ProgressController extends Controller {
 
+    private $path_backend;
+    private $path_frontend;
+    private $path_api;
+    private $path_socket;
+    private $secret_key;
+
+    public function __construct() {
+        $this->path_backend  = config('deploy.path_backend');
+        $this->path_frontend = config('deploy.path_frontend');
+        $this->path_api      = config('deploy.path_api');
+        $this->path_socket   = config('deploy.path_socket');
+        $this->secret_key    = config('deploy.secret_key');
+    }
+
     private $composerLog;
 
     /**
@@ -51,16 +65,16 @@ class ProgressController extends Controller {
 
         switch ($server) {
             case 'frontend':
-                $path = 'client_web';
+                $path = $this->path_frontend;
             break;
             case 'backend':
-                $path = 'client_backend';
+                $path = $this->path_backend;
             break;
             case 'api':
-                $path = 'server_api';
+                $path = $this->path_api;
             break;
             case 'socket':
-                $path = 'server_socket';
+                $path = $this->path_socket;
             break;
             default:
                 $path = null;
@@ -87,7 +101,7 @@ class ProgressController extends Controller {
 
         if (strlen($tag) !== 8) {
             if (!preg_match('/^v\d+\.\d+/', $tag)) {
-                //return false;
+                return false;
             }
         }
 
@@ -118,7 +132,7 @@ class ProgressController extends Controller {
 
         if (strlen($tag) !== 8) {
             if (!preg_match('/^v\d+\.\d+/', $tag)) {
-                //return false;
+                return false;
             }
         }
 
