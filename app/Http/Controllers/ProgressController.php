@@ -101,7 +101,7 @@ class ProgressController extends Controller {
 
         if (strlen($tag) !== 8) {
             if (!preg_match('/^v\d+\.\d+/', $tag)) {
-                return false;
+                // return false;
             }
         }
 
